@@ -1,0 +1,18 @@
+# Categorias de despesa potencialmente sensíveis (briefing §19, eval 05).
+# Mudanças nessas categorias são mostradas ao colaborador SOMENTE como mudança financeira,
+# e chegam ao Gemini agregadas sob um rótulo neutro. Nenhuma condição pessoal é inferida.
+# Lista proposta pelo time; revisar quando a base oficial estiver disponível (ver DECISIONS.md, D-05).
+neutral_label: "categoria potencialmente sensível (agregada)"
+categories:
+  - HEALTH
+  - PHARMACY
+  - MEDICAL
+  - HOSPITAL
+  - THERAPY
+  - BETTING
+  - GAMBLING
+  - RELIGIOUS
+  - DONATION
+  - CHILDCARE
+  - FUNERAL
+  - LEGAL_SERVICES

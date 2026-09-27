@@ -1,0 +1,10 @@
+[project]
+name = "copiloto"
+version = "0.1.0"
+description = "Copiloto de contexto financeiro para colaboradores de cobrança — protótipo do Hackathon Itaú 2026 (Case C). Dados sintéticos."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Copiloto de Contexto — Hackathon Itaú 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@page { size: 1280px 720px; margin: 0; }
+:root{ --orange:#EC7000; --orange-ink:#B35400; --navy:#00246B; --blue:#003399; --ink:#15181D; --ink2:#3D4450;
+  --muted:#6B7280; --line:#E5E7EB; --canvas:#F4F5F7; --ok:#137A4B; --ok-bg:#E8F5EE; --crit:#A11B1B; --crit-bg:#FDECEC;
+  --warn:#8A5300; --warn-bg:#FFF4DE; --info-bg:#EEF3FF; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.slide{width:1280px;height:720px;position:relative;overflow:hidden;background:#fff;page-break-after:always;
+  padding:44px 60px 70px;display:flex;flex-direction:column}
+.slide:last-child{page-break-after:auto}
+.body{flex:1;display:flex;flex-direction:column;min-height:0}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange-ink);
+  display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.eyebrow i{font-style:normal;background:var(--orange);color:#fff;border-radius:6px;padding:2px 8px;font-size:12px;letter-spacing:.04em}
+h1{font-size:36px;line-height:1.14;margin:0 0 24px;color:var(--navy);font-weight:800;letter-spacing:-.01em;max-width:1120px}
+h2{font-size:19px;margin:0 0 10px;color:var(--navy);font-weight:700}
+p,li{font-size:18px;line-height:1.45;color:var(--ink2)}
+ul{margin:0;padding-left:22px} li{margin:0 0 9px}
+.foot{position:absolute;left:60px;right:60px;bottom:22px;display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.foot b{color:var(--ink2)}
+.mark{display:inline-flex;width:22px;height:22px;border-radius:6px;background:var(--orange);align-items:center;justify-content:center;
+  margin-right:8px;vertical-align:middle}
+.mark:after{content:"";width:8px;height:8px;border:2px solid #fff;border-radius:2px}
+.card{border:1px solid var(--line);border-radius:16px;padding:22px 24px;background:#fff}
+.card.soft{background:var(--canvas);border-color:transparent}
+.card.accent{border-left:6px solid var(--orange)}
+.big{font-size:60px;font-weight:800;color:var(--navy);letter-spacing:-.03em;line-height:1}
+.big small{font-size:20px;font-weight:600;color:var(--muted);margin-left:6px;letter-spacing:0}
+.shot{border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,36,107,.12);display:block;max-width:100%}
+.cap{font-size:15px;color:var(--muted);margin-top:10px;line-height:1.45}
+.ph{display:inline-block;border:2px dashed var(--orange);color:var(--orange-ink);background:#FFF7EE;border-radius:8px;
+  padding:4px 12px;font-weight:600;font-size:16px}
+.pill{display:inline-block;border-radius:999px;padding:5px 13px;font-size:14px;font-weight:700;margin:0 6px 6px 0}
+.p-crit{background:var(--crit-bg);color:var(--crit)} .p-ok{background:var(--ok-bg);color:var(--ok)}
+.num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:var(--orange);color:#fff;font-weight:700;
+  font-size:14px;align-items:center;justify-content:center;margin-right:10px;flex:none}
+.row{display:flex;gap:24px} .col{flex:1;min-width:0}
+.quote{border-left:6px solid var(--orange);background:#FFF9F2;border-radius:0 14px 14px 0;padding:16px 20px;font-size:18px;
+  line-height:1.5;color:var(--ink)}
+table{border-collapse:collapse;width:100%}
+td,th{padding:10px 8px;border-bottom:1px solid #EEF0F3;text-align:left;vertical-align:middle}
+th{font-size:13px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line)}
+.vs{display:grid;grid-template-columns:1fr 1fr;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.vs div{padding:13px 18px;font-size:16px;line-height:1.4;border-bottom:1px solid var(--line)}
+.vs .h{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.vs .a{background:#FBFBFC;color:var(--ink2)} .vs .b{background:#F2FAF5;color:#0F5C39;font-weight:600}
+.vs div:nth-last-child(-n+2){border-bottom:0}
+.flow{display:flex;align-items:stretch;gap:6px;margin:0 0 22px}
+.flow div{flex:1;background:var(--canvas);border-radius:12px;padding:12px 8px;text-align:center;font-size:14px;font-weight:600;
+  color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1.25}
+.flow div.ai{background:#FFF1E3;color:var(--orange-ink)} .flow div.hum{background:#E8F0FF;color:var(--blue)}
+.flow span{align-self:center;color:var(--orange);font-weight:800;font-size:18px}
+.ctl{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1}
+.ctl .card{padding:20px 22px}
+.ctl h2{font-size:18px;margin-bottom:6px} .ctl p{font-size:16px;margin:0;line-height:1.45}
+.strip{margin-top:16px;background:var(--navy);color:#fff;border-radius:14px;padding:14px 20px;font-size:17px;display:flex;gap:12px;align-items:center}
+.strip b{color:#FFD0A3}
+.demo{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1}
+.demo .frame{height:300px;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,36,107,.12);
+  background:#fff;display:flex;align-items:center;justify-content:center}
+.demo .frame img{width:100%;height:100%;object-fit:cover;object-position:left top}
+.demo h2{font-size:21px}
+.demo .say{font-size:15px;color:var(--ink);background:#FFF9F2;border-radius:10px;padding:10px 12px;margin-top:10px;border-left:4px solid var(--orange)}
+/* capa */
+.cover{background:linear-gradient(135deg,#00246B 0%,#003399 62%,#0B47C4 100%);color:#fff;padding:0}
+.cover .left{position:absolute;left:64px;top:74px;width:560px}
+.cover .eyebrow{color:#FFD0A3}
+.cover h1{color:#fff;font-size:60px;margin:8px 0 20px}
+.cover p{color:#DCE5FF;font-size:22px;line-height:1.45}
+.cover .team{margin-top:34px}
+.cover .ph{background:rgba(255,255,255,.1);color:#FFD9B3;border-color:#FFB26B}
+.cover .right{position:absolute;right:-40px;top:70px;width:650px;transform:rotate(-2deg)}
+.cover .right img{width:100%;border-radius:14px;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.cover .bar{position:absolute;left:0;right:0;bottom:0;height:8px;background:var(--orange)}
+.cover .foot{border-color:rgba(255,255,255,.25);color:#C9D6FF;bottom:26px}
+.cover .foot b{color:#fff}
+</style>
+</head>
+<body>
+
+<!-- 1. CAPA -->
+<section class="slide cover">
+  <div class="left">
+    <div class="eyebrow">Hackathon Itaú 2026 · Case C — Jornada de agentes</div>
+    <h1><span class="mark" style="width:46px;height:46px;border-radius:12px;margin-right:14px"></span>Copiloto de Contexto</h1>
+    <p>Um agente que prepara o caso de cobrança com <b style="color:#fff">uma prova para cada afirmação</b> — e deixa a decisão com o colaborador.</p>
+    <div class="team"><span class="ph">Equipe: [nome 1] · [nome 2] · [nome 3] · [nome 4]</span></div>
+  </div>
+  <div class="right"><img src="img/c_visao_geral.png" alt="Tela do Copiloto de Contexto"></div>
+  <div class="foot"><span>Protótipo de hackathon com dados sintéticos. Não é produto nem comunicado oficial do Itaú.</span><span><b>1</b> / 10</span></div>
+  <div class="bar"></div>
+</section>
+
+<!-- 2. PESSOA E PROBLEMA -->
+<section class="slide">
+  <div class="eyebrow"><i>1</i>Pessoa e problema</div>
+  <h1>Antes de conversar com o cliente, o analista precisa entender o caso — e hoje isso é manual e arriscado</h1>
+  <div class="body">
+    <div class="row" style="margin-bottom:22px">
+      <div class="card accent col"><h2>Quem sente a dor</h2><p style="margin:0">A <b>analista de renegociação</b> (persona fictícia) abre um caso de atraso e precisa entender o que mudou na vida financeira do cliente antes da conversa.</p></div>
+      <div class="card soft col"><h2>Quem se beneficia no fim</h2><p style="margin:0">O <b>cliente</b>, tratado com base em fatos verificáveis — não em suposições sobre emprego, saúde ou intenção de pagar.</p></div>
+    </div>
+    <div class="vs">
+      <div class="a h">Hoje</div><div class="b h">Com o Copiloto de Contexto</div>
+      <div class="a">Os dados estão em <b>15 tabelas</b>: contas, cartões, faturas, empréstimos, parcelas, consentimentos, contatos.</div>
+      <div class="b">Um cliente por vez, com o caso montado e cada número ligado à sua prova.</div>
+      <div class="a">Métricas prontas <b>misturam transferência, resgate e renda</b>.</div>
+      <div class="b">Tudo recalculado a partir dos registros, com regras explícitas.</div>
+      <div class="a">Ausência de dado vira "zero" e suposição vira "fato".</div>
+      <div class="b">"Indisponível" com o motivo, e hipóteses sempre marcadas como não confirmadas.</div>
+    </div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · Case C: entrada definida (caso autorizado) → trabalho do agente → revisão humana registrada</span><span><b>2</b> / 10</span></div>
+</section>
+
+<!-- 3. EVIDÊNCIAS -->
+<section class="slide">
+  <div class="eyebrow"><i>2</i>Evidências</div>
+  <h1>Os dados prontos enganam — por isso o agente não confia neles e recalcula tudo</h1>
+  <div class="body">
+    <div class="row" style="margin-bottom:20px">
+      <div class="card col"><div class="big">182<small>de 600</small></div>
+        <p style="margin:14px 0 0;font-size:16px">meses-cliente em que o <b>agregado pronto da base oficial</b> calcula as entradas de forma incompatível com as regras: deixa de fora 174 Pix de terceiros e conta resgate de investimento como entrada.</p></div>
+      <div class="card col"><div class="big">−100%</div>
+        <p style="margin:14px 0 0;font-size:16px">queda indicada pelo agregado pronto para um cliente cujo <b>Open Finance expirou</b>. Era perda de visibilidade, não de renda — o copiloto mostra "indisponível".</p></div>
+      <div class="card col"><div class="big">22</div>
+        <p style="margin:14px 0 0;font-size:16px">renegociações históricas em 50 clientes: pouco para treinar um modelo sobre quem paga. E prever intenção de pagar ficou <b>fora do escopo</b> por governança.</p></div>
+    </div>
+    <div class="row" style="flex:1">
+      <div class="card accent col" style="flex:1.3"><h2>Por isso o motor recalcula com regras explícitas</h2>
+        <p style="margin:0;font-size:16px">Transferência entre contas próprias não é renda nem consumo · resgate de investimento é liquidez, não renda · Pix de terceiro não é salário · compra no cartão + pagamento da fatura não são duas despesas · mês sem visibilidade não é zero.</p></div>
+      <div class="card soft col"><h2>Fontes e limites</h2>
+        <p style="margin:0;font-size:15px">Inspeção somente leitura da base sintética oficial (gabarito não aberto). O caso −100% vem da base de demonstração do time, com a mesma lógica do agregado. Dados sintéticos: os achados descrevem a base, não clientes reais.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · números medidos pelo time; nenhum resultado de negócio é afirmado</span><span><b>3</b> / 10</span></div>
+</section>
+
+<!-- 4. SOLUÇÃO -->
+<section class="slide">
+  <div class="eyebrow"><i>3</i>Solução e jornada</div>
+  <h1>Um cliente por vez, em três etapas: o agente prepara, o colaborador decide</h1>
+  <div class="body">
+    <div class="row" style="gap:30px;flex:1">
+      <div class="col" style="flex:.95;display:flex;flex-direction:column;gap:12px">
+        <div class="card soft" style="padding:16px 20px;display:flex;align-items:flex-start"><span class="num">1</span><div><h2 style="margin-bottom:2px">Visão geral</h2><p style="margin:0;font-size:16px">5 indicadores com o nível de confiança de cada um, sinais, gráfico mensal e linha do tempo.</p></div></div>
+        <div class="card soft" style="padding:16px 20px;display:flex;align-items:flex-start"><span class="num">2</span><div><h2 style="margin-bottom:2px">Evidências</h2><p style="margin:0;font-size:16px">Cada número com fonte, período, cálculo e linhas de origem.</p></div></div>
+        <div class="card soft" style="padding:16px 20px;display:flex;align-items:flex-start"><span class="num">3</span><div><h2 style="margin-bottom:2px">Conversa e decisão</h2><p style="margin:0;font-size:16px">Hipóteses a validar, perguntas neutras e o registro da decisão, com campo sempre vazio.</p></div></div>
+        <div><span class="pill p-crit">não prioriza clientes</span><span class="pill p-crit">não escolhe canal ou horário</span><span class="pill p-crit">não oferece acordo</span><span class="pill p-crit">não decide</span></div>
+      </div>
+      <div class="col" style="flex:1.05">
+        <img class="shot" src="img/c_resumo_ia.png" alt="Resumo redigido pela IA e aprovado pelo validador">
+        <div class="cap">Resumo real redigido pelo Gemini e aprovado pelo validador. Os códigos E05… apontam as evidências de cada frase.</div>
+        <div class="card accent" style="margin-top:16px;padding:16px 20px"><h2 style="font-size:17px;margin-bottom:4px">Onde entra a IA</h2>
+          <p style="margin:0;font-size:15.5px">Só redige resumo, hipóteses e perguntas sobre um pacote mínimo de evidências (Google ADK + Gemini, <b>sem ferramentas</b>). Os números vêm do cálculo; um validador reprova a resposta inteira se ela sair do contrato.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · fatos prontos em milissegundos; a redação da IA chega em seguida</span><span><b>4</b> / 10</span></div>
+</section>
+
+<!-- 5. ARQUITETURA E CONTROLES -->
+<section class="slide">
+  <div class="eyebrow"><i>3</i>Como funciona por dentro</div>
+  <h1>Cada etapa tem um controle verificável</h1>
+  <div class="body">
+    <div class="flow">
+      <div class="hum">Caso autorizado</div><span>›</span><div>Dados somente leitura</div><span>›</span>
+      <div>Qualidade por métrica</div><span>›</span><div>Cálculos em Python</div><span>›</span><div>Evidências</div><span>›</span>
+      <div class="ai">IA redige</div><span>›</span><div class="ai">Validador</div><span>›</span><div class="hum">Decisão humana</div><span>›</span><div>Auditoria</div>
+    </div>
+    <div class="ctl">
+      <div class="card"><h2>Acesso</h2><p>Nega por padrão. O cliente é resolvido no servidor a partir do caso; não existe busca. Trocar de caso apaga tudo do anterior.</p></div>
+      <div class="card"><h2>Privacidade</h2><p>Pseudônimo C-XXXX. A IA não recebe nome, CPF, identificadores nem notas do CRM. No plano gratuito, só dados sintéticos.</p></div>
+      <div class="card"><h2>Números</h2><p>A IA escreve marcadores de evidência e o código põe o valor. Número que não bate com a evidência citada reprova a resposta.</p></div>
+      <div class="card"><h2>Conteúdo</h2><p>O validador bloqueia oferta, canal, horário, ranking, intenção de pagar, inferência sensível e afirmação de causa no resumo.</p></div>
+      <div class="card"><h2>Resiliência</h2><p>Três modelos Gemini em cadeia. Se a IA falhar ou atrasar, a tela mostra os fatos calculados. Resposta de caso anterior é descartada.</p></div>
+      <div class="card"><h2>Rastreabilidade</h2><p>Auditoria só de inserção, com hash encadeado. O papel de risco reconstrói exatamente o que o colaborador viu.</p></div>
+    </div>
+    <div class="strip"><b>Menor privilégio:</b> o agente não tem ferramentas — não acessa banco, SQL, arquivos, envio de mensagens nem cobrança.</div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · Python, Pydantic, SQLite (somente leitura), Streamlit, Google ADK + Gemini</span><span><b>5</b> / 10</span></div>
+</section>
+
+<!-- 6. DEMONSTRAÇÃO -->
+<section class="slide">
+  <div class="eyebrow"><i>4</i>Demonstração</div>
+  <h1>Três momentos que a banca vê funcionando</h1>
+  <div class="body">
+    <div class="demo">
+      <div><h2>Ausência não é zero</h2><div class="frame"><img src="img/c_grafico_lacuna.png" alt="Gráfico com meses sem visibilidade" style="object-fit:contain;background:#fff"></div>
+        <div class="say">Open Finance expirado em 31/05: os meses sem visibilidade ficam em bege, sem valor desenhado.</div></div>
+      <div><h2>Toda frase tem prova</h2><div class="frame"><img src="img/c_evidencia_1.png" alt="Painel de evidência"></div>
+        <div class="say">"Ver" abre a evidência: valor, qualidade, fonte, período, fórmula versionada e linhas de origem.</div></div>
+      <div><h2>Tente enganar</h2><div class="frame"><img src="img/c_bloqueio_motivos.png" alt="Resposta adversarial bloqueada" style="object-fit:contain;object-position:center;background:#fff"></div>
+        <div class="say">Número inventado, oferta e inferência de desemprego: resposta descartada inteira, com os motivos na tela.</div></div>
+    </div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · telas reais do protótipo; o teste adversarial é identificado como simulado</span><span><b>6</b> / 10</span></div>
+</section>
+
+<!-- 7. TESTES E APRENDIZADO -->
+<section class="slide">
+  <div class="eyebrow"><i>4</i>Construído e testado</div>
+  <h1>O que funciona, o que testamos e o que mudou depois do teste</h1>
+  <div class="body">
+    <div class="row" style="flex:1;align-items:stretch">
+      <div class="card col"><div class="big">109<small>testes</small></div>
+        <p style="margin:8px 0 12px;font-size:16px"><b>18 de 18</b> cenários obrigatórios do briefing passando, entre eles:</p>
+        <ul style="padding-left:20px"><li style="font-size:15px">caso de outra fila: acesso negado, nada exposto</li>
+          <li style="font-size:15px">sessões simultâneas sem mistura de dados</li>
+          <li style="font-size:15px">nota maliciosa do CRM nunca chega à IA</li>
+          <li style="font-size:15px">número adulterado, oferta e inferência sensível bloqueados</li>
+          <li style="font-size:15px">falha e demora do Gemini com fallback seguro</li></ul></div>
+      <div class="card col"><div class="big">28<small>respostas reais</small></div>
+        <p style="margin:8px 0 12px;font-size:16px">do Gemini avaliadas pelo validador em 26/09: <b>16 aprovadas e 12 bloqueadas</b>. Mais <b>4 falhas do provedor</b> (modelo retirado, alta demanda), todas com fallback. Latência entre 5 e 31 s.</p>
+        <p style="margin:0;font-size:15px;color:var(--muted)">Entre os bloqueios houve problemas reais do modelo (hipótese apoiada em dado ausente) e excesso de rigor nosso, já corrigido. A taxa com as regras atuais ainda precisa ser medida.</p></div>
+      <div class="card accent col"><h2>O que mudamos por causa do teste</h2>
+        <ul style="padding-left:20px">
+          <li style="font-size:15px">pergunta sobre canal e oferta disfarçada ("ajustar o vencimento") <b>passaram a ser bloqueadas</b></li>
+          <li style="font-size:15px">hipótese baseada em dado ausente passou a ser bloqueada</li>
+          <li style="font-size:15px">números corretos copiados da evidência e marcadores abreviados passaram a ser aceitos</li>
+          <li style="font-size:15px">fatos aparecem na hora, a IA chega depois; cadeia de modelos reserva</li></ul></div>
+    </div>
+    <div class="card soft" style="margin-top:16px;padding:14px 20px;display:flex;gap:14px;align-items:center">
+      <b style="color:var(--navy);white-space:nowrap;font-size:17px">Teste com pessoa de fora do time:</b>
+      <span class="ph">[participantes · tarefa · tempo · onde travou · o que mudamos]</span></div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · real: autorização, cálculos, validador, auditoria, Gemini · simulado: login e base de demonstração</span><span><b>7</b> / 10</span></div>
+</section>
+
+<!-- 8. VIABILIDADE -->
+<section class="slide">
+  <div class="eyebrow"><i>5</i>Viabilidade</div>
+  <h1>Como medir, o principal risco e o que falta para escalar</h1>
+  <div class="body">
+    <div class="row" style="flex:1;align-items:stretch">
+      <div class="card col"><h2>Medido no protótipo</h2>
+        <table>
+          <tr><td style="width:96px"><b style="font-size:26px;color:var(--navy)">8 ms</b></td><td style="font-size:16px">fatos prontos (mediana, sem IA)</td></tr>
+          <tr><td><b style="font-size:26px;color:var(--navy)">9 s</b></td><td style="font-size:16px">redação da IA (mediana; 5 a 31 s)</td></tr>
+          <tr><td><b style="font-size:26px;color:var(--navy)">100%</b></td><td style="font-size:16px">afirmações com evidência válida</td></tr>
+          <tr><td><b style="font-size:26px;color:var(--navy)">0</b></td><td style="font-size:16px">acessos a outro cliente nos testes</td></tr>
+          <tr><td><b style="font-size:26px;color:var(--navy)">20/20</b></td><td style="font-size:16px">fatos esperados encontrados (base de demonstração)</td></tr>
+        </table>
+        <p style="font-size:15px;margin:12px 0 0"><b>No piloto:</b> tempo de preparação manual × assistido, afirmações sem suporte e taxa de bloqueio.</p></div>
+      <div class="card accent col"><h2>Principal risco</h2>
+        <p style="font-size:17px">Uma narrativa falsa ou uma inferência sensível induzir um tratamento injusto do cliente.</p>
+        <h2 style="margin-top:16px">Controles</h2>
+        <ul style="padding-left:20px"><li style="font-size:16px">prova obrigatória para cada afirmação</li><li style="font-size:16px">abstenção quando falta dado</li>
+          <li style="font-size:16px">validador que descarta a resposta inteira</li><li style="font-size:16px">decisão sempre humana e auditada</li></ul></div>
+      <div class="card col"><h2>Escala e dependências</h2>
+        <ul style="padding-left:20px">
+          <li style="font-size:16px"><b>Custo:</b> fatos sem custo de IA; uma chamada ao modelo por caso aberto.</li>
+          <li style="font-size:16px"><b>Provedor:</b> houve indisponibilidade no plano gratuito (503) — por isso a cadeia de modelos e o fallback.</li>
+          <li style="font-size:16px"><b>Antes de dado real:</b> plano pago do LLM, autenticação corporativa, base oficial e validação jurídica (12 itens).</li></ul></div>
+    </div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · não afirmamos redução de inadimplência nem ganho financeiro sem experimento</span><span><b>8</b> / 10</span></div>
+</section>
+
+<!-- 9. GOVERNANÇA -->
+<section class="slide">
+  <div class="eyebrow"><i>5</i>Governança e privacidade</div>
+  <h1>Governança desde o início — sem alegar conformidade</h1>
+  <div class="body">
+    <div class="row" style="gap:30px;flex:1;min-height:0">
+      <div class="col" style="flex:.9">
+        <ul>
+          <li style="font-size:17px"><b>Painel de risco:</b> integridade da trilha, respostas bloqueadas, falhas, acessos negados, reconstrução de cada contexto exibido e interruptor que desliga a IA.</li>
+          <li style="font-size:17px">Requisitos <b>orientados pela ISO/IEC 42001</b> (prévia do documento), sem alegação de conformidade.</li>
+          <li style="font-size:17px">A LGPD não foi interpretada por nós: <b>12 decisões jurídicas</b> ficaram registradas como pendentes (base legal, Open Finance, retenção, fornecedor do LLM, transferência internacional…).</li>
+          <li style="font-size:17px"><b>Plano gratuito do Gemini:</b> o fornecedor pode usar o conteúdo. Só sai o pacote minimizado, com dados sintéticos; com dados reais, o plano pago é condição mínima.</li>
+        </ul>
+      </div>
+      <div class="col" style="flex:1.1;display:flex;flex-direction:column;min-height:0">
+        <img class="shot" src="img/06_governanca.png" alt="Painel de governança" style="max-height:440px;object-fit:contain;object-position:top">
+        <div class="cap">Painel do papel de risco: este perfil audita, mas não abre casos de clientes.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span><span class="mark"></span><b>Copiloto de Contexto</b> · controles preliminares; uso real exige validação de políticas internas e requisitos jurídicos</span><span><b>9</b> / 10</span></div>
+</section>
+
+<!-- 10. PRÓXIMOS PASSOS -->
+<section class="slide">
+  <div class="eyebrow"><i>6</i>Próximos passos e equipe</div>
+  <h1>Próximos passos</h1>
+  <div class="body">
+    <div class="row" style="gap:34px;flex:1">
+      <div class="col" style="flex:1.2;display:flex;flex-direction:column;gap:12px">
+        <div class="card soft" style="padding:16px 20px;display:flex"><span class="num">1</span><div><h2 style="margin-bottom:2px">Plugar a base oficial</h2><p style="margin:0;font-size:16px">O mapa de colunas isola a troca: a aplicação não muda.</p></div></div>
+        <div class="card soft" style="padding:16px 20px;display:flex"><span class="num">2</span><div><h2 style="margin-bottom:2px">Testar com analistas de cobrança</h2><p style="margin:0;font-size:16px">Tempo manual × assistido, erros encontrados e compreensão de fato × hipótese.</p></div></div>
+        <div class="card soft" style="padding:16px 20px;display:flex"><span class="num">3</span><div><h2 style="margin-bottom:2px">Medir o modelo com as regras atuais</h2><p style="margin:0;font-size:16px">Taxa de bloqueio e revisão de uma amostra por quem não implementou.</p></div></div>
+        <div class="card soft" style="padding:16px 20px;display:flex"><span class="num">4</span><div><h2 style="margin-bottom:2px">Preparar um piloto em uma fila</h2><p style="margin:0;font-size:16px">Com autenticação corporativa, plano pago do LLM e validação jurídica antes de qualquer dado real.</p></div></div>
+      </div>
+      <div class="col">
+        <h2>Quem fez o quê</h2>
+        <table>
+          <tr><th>Integrante</th><th>Contribuição</th></tr>
+          <tr><td><span class="ph">[nome]</span></td><td><span class="ph">[papel]</span></td></tr>
+          <tr><td><span class="ph">[nome]</span></td><td><span class="ph">[papel]</span></td></tr>
+          <tr><td><span class="ph">[nome]</span></td><td><span class="ph">[papel]</span></td></tr>
+          <tr><td><span class="ph">[nome]</span></td><td><span class="ph">[papel]</span></td></tr>
+        </table>
+        <div class="quote" style="margin-top:26px;font-size:24px;font-weight:800;color:var(--navy)">O agente prepara o contexto.<br>O colaborador decide.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Protótipo de hackathon com dados sintéticos. Não é produto nem comunicado oficial do Itaú.</span><span><b>10</b> / 10</span></div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Guia dos apresentadores — Copiloto de Contexto</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{ --orange:#EC7000; --orange-ink:#B35400; --navy:#00246B; --blue:#003399; --ink:#15181D; --ink2:#3D4450;
+  --muted:#6B7280; --line:#E5E7EB; --canvas:#F4F5F7; --ok:#137A4B; --ok-bg:#E8F5EE; --crit:#A11B1B; --crit-bg:#FDECEC;
+  --warn:#8A5300; --warn-bg:#FFF4DE; --info-bg:#EEF3FF; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);font-size:10.5pt;line-height:1.5;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+h1{font-size:24pt;color:var(--navy);margin:0 0 6px;line-height:1.1;letter-spacing:-.01em}
+h2{font-size:15pt;color:var(--navy);margin:22px 0 8px;padding-top:4px;display:flex;align-items:center;gap:10px;break-after:avoid}
+h2 .n{display:inline-flex;min-width:26px;height:26px;border-radius:7px;background:var(--orange);color:#fff;font-size:11pt;
+  align-items:center;justify-content:center;padding:0 6px}
+h3{font-size:11.5pt;color:var(--navy);margin:14px 0 4px;break-after:avoid}
+ol>li{break-inside:avoid}
+p{margin:0 0 8px;color:var(--ink2)}
+ul,ol{margin:0 0 8px;padding-left:20px;color:var(--ink2)} li{margin:0 0 4px}
+b{color:var(--ink)}
+.new-page{break-before:page}
+.lead{font-size:12pt;color:var(--ink2)}
+.box{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 12px;break-inside:avoid}
+.box.accent{border-left:5px solid var(--orange);background:#FFFAF4}
+.box.blue{border-left:5px solid var(--blue);background:#F5F8FF}
+.box.red{border-left:5px solid var(--crit);background:#FFF7F7}
+.box.green{border-left:5px solid var(--ok);background:#F5FBF7}
+.box h3{margin-top:0}
+.say{border-left:4px solid var(--orange);background:#FFF9F2;border-radius:0 8px 8px 0;padding:8px 12px;margin:6px 0 10px;
+  font-style:italic;color:var(--ink);break-inside:avoid}
+.say:before{content:"Fale: ";font-style:normal;font-weight:700;color:var(--orange-ink)}
+figure{margin:8px 0 14px;break-inside:avoid;text-align:center}
+figure img{max-width:100%;border:1px solid var(--line);border-radius:8px;box-shadow:0 4px 14px rgba(0,36,107,.10)}
+figcaption{font-size:9pt;color:var(--muted);margin-top:5px;text-align:left}
+table{border-collapse:collapse;width:100%;margin:6px 0 12px;font-size:9.5pt;break-inside:auto}
+th{background:var(--navy);color:#fff;text-align:left;padding:6px 8px;font-weight:600}
+td{border-bottom:1px solid var(--line);padding:6px 8px;vertical-align:top;color:var(--ink2)}
+tr{break-inside:avoid}
+code{font-family:ui-monospace,Consolas,monospace;font-size:9pt;background:var(--canvas);padding:1px 5px;border-radius:4px}
+.chip{display:inline-block;border-radius:999px;padding:1px 8px;font-size:8.5pt;font-weight:700}
+.c-ok{background:var(--ok-bg);color:var(--ok)} .c-warn{background:var(--warn-bg);color:var(--warn)}
+.c-crit{background:var(--crit-bg);color:var(--crit)} .c-info{background:var(--info-bg);color:var(--blue)}
+.c-gray{background:#EEF0F3;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.side{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start}
+.qa{break-inside:avoid;margin:0 0 10px;padding:8px 12px;border:1px solid var(--line);border-radius:8px}
+.qa .q{font-weight:700;color:var(--navy);margin-bottom:3px}
+.qa .a{color:var(--ink2)}
+.ph{border:1.5px dashed var(--orange);color:var(--orange-ink);background:#FFF7EE;border-radius:6px;padding:1px 7px;font-weight:600}
+.cover{height:257mm;display:flex;flex-direction:column;justify-content:space-between}
+.cover .top{background:linear-gradient(135deg,#00246B 0%,#003399 70%,#0B47C4 100%);border-radius:16px;padding:34px 34px 30px;color:#fff;
+  border-bottom:6px solid var(--orange)}
+.cover .eyebrow{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#FFD0A3;margin-bottom:10px}
+.cover h1{color:#fff;font-size:30pt;margin:0 0 10px}
+.cover .top p{color:#DCE5FF;font-size:13pt;margin:0}
+.toc{columns:2;column-gap:24px;margin-top:14px}
+.toc div{break-inside:avoid;padding:6px 0;border-bottom:1px solid var(--line);font-size:11pt;color:var(--ink)}
+.toc span{display:inline-block;width:26px;color:var(--orange-ink);font-weight:800}
+.small{font-size:9pt;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<section class="cover">
+  <div>
+    <div class="top">
+      <div class="eyebrow">Hackathon Itaú 2026 · Case C — Jornada de agentes</div>
+      <h1>Guia dos apresentadores</h1>
+      <p>Copiloto de Contexto: o que o sistema faz, cada funcionalidade, o roteiro da demonstração e as respostas para as perguntas da banca.</p>
+    </div>
+    <h3 style="margin-top:26px">Neste guia</h3>
+    <div class="toc">
+      <div><span>1</span>O sistema em 30 segundos</div>
+      <div><span>2</span>O problema que resolvemos</div>
+      <div><span>3</span>Como funciona, passo a passo</div>
+      <div><span>4</span>A tela, parte por parte</div>
+      <div><span>5</span>Os casos da demonstração</div>
+      <div><span>6</span>Roteiro da demo ao vivo</div>
+      <div><span>7</span>Roteiro do vídeo de 2 minutos</div>
+      <div><span>8</span>Roteiro do pitch de 3 minutos</div>
+      <div><span>9</span>Perguntas prováveis da banca</div>
+      <div><span>10</span>Números: o que citar e o que evitar</div>
+      <div><span>11</span>Glossário</div>
+      <div><span>12</span>Checklist e plano B</div>
+    </div>
+  </div>
+  <div class="box blue">
+    <b>Regra de ouro para quem apresenta:</b> o agente <b>prepara o contexto</b>; o colaborador <b>decide</b>. O sistema nunca prioriza clientes, escolhe canal ou horário, oferece acordo, prevê intenção de pagar nem registra decisão sozinho.
+    <p class="small" style="margin:6px 0 0">Protótipo de hackathon com dados sintéticos. Não é produto nem comunicado oficial do Itaú.</p>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="new-page">
+<h2><span class="n">1</span>O sistema em 30 segundos</h2>
+<p class="lead">O <b>Copiloto de Contexto</b> ajuda a analista de cobrança e renegociação a entender a situação financeira de <b>um cliente por vez</b> antes da conversa. Ele reúne os dados do cliente, recalcula os números com regras explícitas, mostra o que se pode e o que <b>não</b> se pode concluir, e liga cada afirmação à sua prova. A IA só escreve o resumo, as hipóteses e as perguntas — e um validador descarta a resposta inteira se ela sair das regras. A decisão continua sendo da pessoa e fica registrada.</p>
+<div class="say">Quando um caso de atraso chega, a analista precisa abrir várias telas e juntar números que às vezes enganam. O Copiloto de Contexto monta o caso em segundos, com uma prova para cada frase, e se cala quando faltam dados. A decisão continua com ela.</div>
+
+<h2><span class="n">2</span>O problema que resolvemos</h2>
+<div class="two">
+  <div class="box accent"><h3>Para quem</h3><p style="margin:0"><b>Quem usa:</b> a analista de renegociação (persona fictícia).<br><b>Quem se beneficia no fim:</b> o cliente, tratado com base em fatos verificáveis e não em suposições.</p></div>
+  <div class="box"><h3>A dor</h3><ul style="margin:0"><li>Dados espalhados em 15 tabelas (contas, cartões, faturas, empréstimos, parcelas, consentimentos, contatos, renegociações).</li><li>Métricas prontas que misturam transferência, resgate e renda.</li><li>Ausência de dado lida como "zero"; suposição lida como "fato".</li></ul></div>
+</div>
+<p><b>O achado que sustenta a escolha:</b> na base sintética oficial do hackathon, o agregado pronto de entradas é incompatível com as regras em <b>182 de 600</b> meses-cliente (deixa de fora 174 Pix de terceiros e conta resgate de investimento como entrada). Na base de demonstração do time, o mesmo tipo de agregado indicaria <b>−100%</b> de entradas para um cliente cujo Open Finance apenas expirou.</p>
+<p><b>Por que é Case C:</b> é um fluxo em que pessoas e IA trabalham juntas, com <b>entrada definida</b> (um caso autorizado), <b>saída útil</b> (contexto com prova) e <b>ponto claro de revisão</b> (a decisão humana registrada). Quem pode fazer o quê, quem aprova e como verificar o que aconteceu estão explícitos — o papel de risco reconstrói qualquer contexto exibido.</p>
+
+<h2><span class="n">3</span>Como funciona, passo a passo</h2>
+<ol>
+  <li><b>Acesso:</b> a analista (identidade simulada) só vê os casos da própria fila. Não existe busca por cliente. O sistema resolve o cliente no servidor a partir do caso.</li>
+  <li><b>Dados:</b> lidos em modo somente leitura, sempre filtrados pelo cliente do caso ativo.</li>
+  <li><b>Qualidade:</b> antes de qualquer conclusão, cada métrica recebe <span class="chip c-ok">Suficiente</span> <span class="chip c-warn">Parcial</span> ou <span class="chip c-crit">Insuficiente</span>, com o motivo.</li>
+  <li><b>Cálculos:</b> em Python, em centavos, com regras explícitas (transferência própria não é renda; resgate é liquidez; compra + fatura não são duas despesas; sem visibilidade não é zero).</li>
+  <li><b>Evidências:</b> cada número vira uma evidência com código (ex.: <code>E07-9F3A</code>), fonte, período, fórmula e linhas de origem.</li>
+  <li><b>IA:</b> o Gemini (via Google ADK, <b>sem ferramentas</b>) recebe só um pacote mínimo — sem nome, CPF, identificadores nem notas — e escreve resumo, hipóteses e perguntas usando os códigos de evidência no lugar dos números.</li>
+  <li><b>Validador:</b> confere cada frase. Se houver número que não bate, evidência de outro cliente, oferta, canal, horário, ranking, intenção de pagar, inferência sensível ou afirmação de causa, a resposta inteira é descartada e a tela mostra só os fatos calculados.</li>
+  <li><b>Decisão:</b> a analista escreve a decisão num campo vazio. Registrar não executa cobrança, não envia mensagem e não altera nenhum sistema.</li>
+  <li><b>Auditoria:</b> tudo fica numa trilha só de inserção, com hash encadeado, que o papel de risco consegue reconstruir.</li>
+</ol>
+</section>
+
+<!-- 4 -->
+<section>
+<h2><span class="n">4</span>A tela, parte por parte</h2>
+<figure><img src="img/c_visao_geral.png" style="max-height:92mm" alt="Visão geral"><figcaption>Caso C-4AE0 com o resumo redigido pela IA e aprovado pelo validador.</figcaption></figure>
+
+<h3>4.1 Barra lateral</h3>
+<div class="side">
+  <img src="img/c_barra_lateral.png" style="width:150px;border:1px solid var(--line);border-radius:8px" alt="Barra lateral">
+  <div>
+    <ul>
+      <li><b>Identidade simulada:</b> escolha <b>Ana</b> (analista), <b>Bruno</b> (outro analista, outra fila) ou <b>Sérgio</b> (risco e conformidade). Não há login real no protótipo.</li>
+      <li><b>Sua fila:</b> só os casos autorizados, identificados pelo pseudônimo <code>C-XXXX</code> e pelo número do caso. A ordem é por número — sem priorização.</li>
+      <li><b>Inteligência artificial:</b> liga ou desliga o resumo e as hipóteses com IA. Sem IA, o sistema continua funcionando com os fatos calculados. "Privacidade e dados" explica o plano gratuito do Gemini.</li>
+      <li><b>Ações do caso:</b> <b>Remontar contexto</b> (reabre o caso com novo identificador) e <b>Testar o validador</b> (envia uma resposta propositalmente errada e mostra o bloqueio).</li>
+    </ul>
+  </div>
+</div>
+
+<h3>4.2 Faixa do caso</h3>
+<p>Mostra o cliente (pseudônimo), o status dos dados, o estado da IA e o tempo. Estados da IA:
+<span class="chip c-info">IA redigindo…</span> <span class="chip c-ok">IA validada</span> <span class="chip c-crit">IA bloqueada</span> <span class="chip c-warn">IA indisponível</span> <span class="chip c-gray">Sem IA</span>. O tempo mostra "fatos 9 ms · IA 19,1 s": os fatos aparecem na hora e a redação da IA chega depois.</p>
+
+<h3>4.3 Os cinco indicadores</h3>
+<figure><img src="img/c_kpis_indisponivel.png" alt="Indicadores"><figcaption>Cliente com Open Finance expirado: entradas e despesas aparecem como "Indisponível", com o motivo.</figcaption></figure>
+<table>
+  <tr><th style="width:26%">Indicador</th><th>O que mostra</th></tr>
+  <tr><td><b>Entradas recorrentes</b> (ou externas)</td><td>Média mensal de jun–ago/2026 e a variação contra mar–mai. Recorrente = mesma contraparte em pelo menos 3 meses. Não é "renda comprovada".</td></tr>
+  <tr><td><b>Despesa econômica</b></td><td>Compras no cartão + débitos de consumo. Não soma o pagamento da fatura (seria contar duas vezes). Se houver pico isolado, a seta fica neutra.</td></tr>
+  <tr><td><b>Uso do limite do cartão</b></td><td>Saldo atual ÷ limite, com barra; dias em atraso no cartão.</td></tr>
+  <tr><td><b>Parcelas ÷ entradas</b></td><td>Quanto das entradas observadas as parcelas de empréstimo do banco representam. Não avalia capacidade de pagamento.</td></tr>
+  <tr><td><b>Em atraso</b></td><td>Parcelas vencidas sem pagamento e o valor; atraso do cartão.</td></tr>
+</table>
+<p>O <b>ponto colorido</b> no canto de cada indicador é a qualidade da métrica (verde = suficiente, amarelo = parcial, vermelho = insuficiente). O botão <b>Evidências dos indicadores</b> abre as provas de todos.</p>
+</section>
+
+<section>
+<h3>4.4 Aba ① Visão geral</h3>
+<figure><img src="img/c_resumo_ia.png" style="max-width:82%" alt="Resumo"><figcaption>Resumo redigido pela IA e aprovado. Os códigos E05, E06… são as evidências de cada frase.</figcaption></figure>
+<ul>
+  <li><b>Resumo do caso:</b> com IA validada, 2 a 4 frases descritivas. Sem IA, bloqueada ou indisponível, mostra os principais fatos calculados por regra — nada é inventado.</li>
+  <li><b>Sinais:</b> padrões derivados dos fatos, como "redução das entradas", "a redução precedeu o primeiro atraso" (precedência não é causa), "faturas não pagas integralmente", "pico isolado de despesa", "uso de reserva financeira" e "perda de visibilidade".</li>
+  <li><b>Gráfico mensal:</b> entradas (azul) e despesa econômica (laranja) em 12 meses. Faixa cinza = janela base (mar–mai); faixa azul = janela recente (jun–ago); faixa bege = mês sem visibilidade das fontes, sem valor desenhado.</li>
+  <li><b>Confiabilidade dos dados:</b> as 7 métricas com o status e o motivo, a situação do Open Finance e conflitos de metadados encontrados na base.</li>
+  <li><b>Linha do tempo:</b> eventos datados — queda de entradas, primeiro atraso, resgate, renegociações e contatos.</li>
+</ul>
+<div class="two">
+  <figure><img src="img/c_grafico_lacuna.png" alt="Gráfico"><figcaption>Open Finance expirado: meses sem visibilidade em bege.</figcaption></figure>
+  <figure><img src="img/c_confiabilidade.png" style="max-height:78mm" alt="Confiabilidade"><figcaption>Confiabilidade: métricas insuficientes aparecem em vermelho, com o motivo.</figcaption></figure>
+</div>
+
+<h3>4.5 Aba ② Evidências</h3>
+<p>Lista todos os fatos por tema (entradas, transferências, despesas, crédito, renegociações, contatos, fontes). O botão <b>Ver</b> de cada fato abre a prova: valor, qualidade, fonte, período, fórmula versionada, limitações e as linhas de origem. À direita ficam a tabela do fluxo mensal (a mesma do gráfico), a conciliação do cartão (compras × fatura × pagamento) e as limitações da análise.</p>
+<figure><img src="img/c_evidencia.png" style="max-width:60%" alt="Evidência"><figcaption>Painel de evidência aberto pelo botão "Ver".</figcaption></figure>
+</section>
+
+<section>
+<h3>4.6 Aba ③ Conversa e decisão</h3>
+<figure><img src="img/05_conversa.png" style="max-height:96mm" alt="Conversa"><figcaption>Caso C-F65B: perguntas neutras, interações e notas do CRM exibidas como texto não confiável — inclusive a nota maliciosa.</figcaption></figure>
+<ul>
+  <li><b>Hipóteses a validar:</b> possibilidades, nunca conclusões, sempre com o rótulo "HIPÓTESE — NÃO CONFIRMADA". Em caso com dados insuficientes, nenhuma hipótese é mostrada.</li>
+  <li><b>Perguntas para a conversa:</b> neutras, para validar informações que faltam. Não são roteiro de cobrança nem proposta.</li>
+  <li><b>Interações anteriores e notas do CRM:</b> as notas são texto livre registrado por pessoas e são tratadas como dado não confiável — aparecem só como texto e nunca são enviadas à IA.</li>
+  <li><b>O que falta saber:</b> as lacunas (ex.: renda atual comprovada, situação em outras instituições).</li>
+  <li><b>Sua decisão:</b> campo vazio, escrito pela analista. Registrar grava na auditoria, vinculado à versão exata do contexto exibido. Não executa cobrança nem envia nada.</li>
+</ul>
+
+<h3>4.7 Testar o validador</h3>
+<figure><img src="img/c_bloqueio_motivos.png" style="max-width:80%" alt="Bloqueio"><figcaption>Resposta adversarial simulada: descartada inteira, com os motivos na tela.</figcaption></figure>
+<p>O botão envia ao validador uma resposta propositalmente errada (número inventado, "perdeu o emprego", "ligar à noite e oferecer desconto", "não quer pagar", pergunta acusatória). A tela avisa que é um teste simulado — não veio do Gemini — e mostra os motivos do bloqueio.</p>
+
+<h3>4.8 Painel de governança (Sérgio, risco)</h3>
+<figure><img src="img/06_governanca.png" style="max-width:78%" alt="Governança"><figcaption>O papel de risco audita, mas não abre casos de clientes.</figcaption></figure>
+<p>Mostra a integridade da trilha de auditoria, os contextos exibidos, as respostas do Gemini bloqueadas (separadas dos testes simulados e das falhas do provedor), as falhas, os acessos negados, a reconstrução do que o colaborador viu e um interruptor que desliga a IA para todos.</p>
+</section>
+
+<!-- 5 -->
+<section>
+<h2><span class="n">5</span>Os casos da demonstração</h2>
+<p>Os pseudônimos abaixo valem para o computador da demo (são gerados com um segredo local).</p>
+<table>
+  <tr><th style="width:17%">Caso</th><th style="width:36%">Situação</th><th>O que mostrar</th></tr>
+  <tr><td><b>C-4AE0</b><br>CASE_0001</td><td>Entradas recorrentes caíram 40,4%; resgate de investimento; 1 parcela vencida; faturas pagas parcialmente.</td><td><b>Caso principal.</b> Resumo validado pela IA, sinal "a redução precedeu o atraso", transferências próprias excluídas.</td></tr>
+  <tr><td><b>C-FD35</b><br>CASE_0002</td><td>Open Finance expirou em 31/05/2026.</td><td><b>Ausência não é zero:</b> entradas "Indisponível", faixa bege no gráfico.</td></tr>
+  <tr><td><b>C-F65B</b><br>CASE_0003</td><td>Acordo anterior rompido e outro não aceito; nota maliciosa no CRM.</td><td>Renegociações sem motivo inventado; nota "IGNORE AS REGRAS…" exibida só como texto.</td></tr>
+  <tr><td><b>C-9A34</b><br>CASE_0004</td><td>Dados insuficientes: meses sem observação e fontes ausentes.</td><td>Status "Dados insuficientes" e nenhuma hipótese.</td></tr>
+  <tr><td><b>C-A961</b><br>CASE_0005</td><td>Padrão estável com uma compra grande em julho.</td><td>Pico isolado: despesa +32,7% com seta neutra, sem "crise".</td></tr>
+  <tr><td><b>C-6686</b><br>CASE_0006</td><td>Gastos em farmácia subiram muito.</td><td>Mostrado só como mudança financeira; nada sobre saúde.</td></tr>
+  <tr><td><b>C-510B</b><br>CASE_0007</td><td>Caso de referência com acordo ativo.</td><td>Situação estável para comparação.</td></tr>
+  <tr><td>CASE_0008 / 0009</td><td>Fila do Bruno / de ninguém.</td><td>Não aparecem para a Ana: acesso negado por padrão.</td></tr>
+</table>
+
+<!-- 6 -->
+<h2><span class="n">6</span>Roteiro da demo ao vivo (cerca de 75 s)</h2>
+<ol>
+  <li><b>Identidade Ana, caso C-4AE0.</b> Mostre que os indicadores aparecem na hora.
+    <div class="say">Os fatos ficam prontos em milissegundos. Entradas recorrentes caíram 40% — o sistema diz "observado", nunca "perdeu o emprego".</div></li>
+  <li><b>Aba ②, botão "Ver"</b> no fato de entradas.
+    <div class="say">Toda frase tem prova: fonte, período, fórmula e as transações de origem.</div></li>
+  <li><b>Caso C-FD35.</b> Mostre os indicadores "Indisponível" e a faixa bege.
+    <div class="say">O Open Finance expirou. Um número pronto diria −100%. Aqui o sistema diz que não dá para saber.</div></li>
+  <li><b>Ações do caso → Testar o validador.</b>
+    <div class="say">Mandamos uma resposta com número inventado, oferta e "perdeu o emprego". O validador descarta tudo e mostra por quê.</div></li>
+  <li><b>Aba ③</b>: perguntas neutras e o campo de decisão vazio.
+    <div class="say">A decisão é da analista. Registrar não cobra, não envia nada — só fica na auditoria.</div></li>
+</ol>
+<p class="small">Se sobrar tempo: troque para <b>Sérgio</b> e mostre a reconstrução do contexto exibido.</p>
+</section>
+
+<!-- 7 e 8 -->
+<section>
+<h2><span class="n">7</span>Roteiro do vídeo de 2 minutos</h2>
+<table>
+  <tr><th style="width:13%">Tempo</th><th style="width:30%">Tela</th><th>Narração</th></tr>
+  <tr><td>0:00–0:15</td><td>Tela inicial com a fila da Ana</td><td>"Esta é a Ana, analista de renegociação. Antes de falar com um cliente, ela precisa entender o caso. Protótipo de hackathon, dados sintéticos."</td></tr>
+  <tr><td>0:15–0:40</td><td>Caso C-4AE0: indicadores e resumo validado</td><td>"Os fatos aparecem na hora. A IA escreve o resumo, mas os números vêm do cálculo, e cada frase aponta sua evidência."</td></tr>
+  <tr><td>0:40–0:55</td><td>Aba ② e botão "Ver"</td><td>"Qualquer número pode ser conferido: fonte, período, fórmula e transações de origem."</td></tr>
+  <tr><td>0:55–1:15</td><td>Caso C-FD35: indisponível e faixa bege</td><td>"Quando falta dado, o sistema se cala. Open Finance expirado não vira queda de renda."</td></tr>
+  <tr><td>1:15–1:35</td><td>Testar o validador</td><td>"Se a IA inventar um número ou sugerir oferta, a resposta é descartada inteira, com o motivo."</td></tr>
+  <tr><td>1:35–1:50</td><td>Aba ③ e registro da decisão; painel do Sérgio</td><td>"A decisão é humana e fica registrada. A área de risco reconstrói tudo o que foi exibido."</td></tr>
+  <tr><td>1:50–2:00</td><td>—</td><td>"Limitação: dados sintéticos e login simulado; o próximo passo é testar com analistas reais."</td></tr>
+</table>
+
+<h2><span class="n">8</span>Roteiro do pitch de 3 minutos</h2>
+<table>
+  <tr><th style="width:13%">Tempo</th><th style="width:26%">Assunto</th><th>O que dizer</th></tr>
+  <tr><td>0:00–0:40</td><td>Pessoa, problema e evidência</td><td>"Quando um cliente atrasa, a analista precisa entender o que mudou. Os dados estão em 15 tabelas e até os números prontos enganam: na base do hackathon, 182 de 600 meses-cliente têm entradas calculadas de forma incompatível."</td></tr>
+  <tr><td>0:40–1:30</td><td>Proposta e abordagem</td><td>"O Copiloto de Contexto prepara o caso com uma prova para cada frase. A IA redige, mas não calcula, não decide e não oferece. Quando falta dado, ela se cala."</td></tr>
+  <tr><td>1:30–2:15</td><td>Teste e aprendizado</td><td>"109 testes, 18 de 18 cenários do briefing. No teste com o Gemini real, o validador pegou perguntas sobre canal e oferta disfarçada — e nós também afinamos regras rígidas demais." <span class="ph">+ resultado do teste com pessoa de fora</span></td></tr>
+  <tr><td>2:15–3:00</td><td>Risco, controle, indicador, próximo passo</td><td>"O maior risco é uma narrativa falsa sobre uma pessoa. O controle: prova obrigatória, abstenção, validador e decisão humana auditada. Próximo passo: medir com analistas o tempo de preparação e as afirmações sem suporte. Vamos ver funcionando."</td></tr>
+</table>
+<div class="box blue"><b>Atenção ao formato:</b> o guia oficial fala em pitch de 4 minutos com demo curta; a abertura fala em 3 minutos de pitch + 2 de vídeo. Confirmem com a organização e tenham as duas versões ensaiadas.</div>
+</section>
+
+<!-- 9 -->
+<section>
+<h2><span class="n">9</span>Perguntas prováveis da banca</h2>
+<div class="qa"><div class="q">Por que o sistema não prioriza clientes nem sugere canal ou oferta?</div><div class="a">Foi uma decisão de governança do time: o agente prepara o contexto e o humano decide. Priorizar ou prever intenção de pagar é uma decisão sensível, com risco de tratamento injusto, e a base (22 renegociações em 50 clientes) não sustenta um modelo confiável. A fila fica em ordem de número do caso.</div></div>
+<div class="qa"><div class="q">Como vocês garantem que a IA não inventa números?</div><div class="a">A IA escreve códigos de evidência no lugar dos números e o código preenche o valor calculado. Se ela escrever um número que não bate com a evidência citada, ou disser "aumentou" quando o valor caiu, o validador descarta a resposta inteira. Isso é testado automaticamente.</div></div>
+<div class="qa"><div class="q">E se a IA escrever algo errado que o validador não pega?</div><div class="a">É possível — listas de regras são uma rede de segurança, não garantia. Por isso os fatos e os números são calculados sem IA, cada frase exige evidência, hipóteses vêm rotuladas, a decisão é humana e tudo fica auditado. No piloto, mediríamos "afirmações sem suporte" com revisão humana.</div></div>
+<div class="qa"><div class="q">E se o Gemini sair do ar?</div><div class="a">Aconteceu no teste: modelo retirado (404) e alta demanda (503). O sistema tenta três modelos em sequência e, se nenhum responder, mostra os fatos calculados e avisa. Nada é inventado e nada trava.</div></div>
+<div class="qa"><div class="q">Os dados são reais? O que a IA recebe?</div><div class="a">Todos os dados são sintéticos. A IA recebe só um pacote minimizado: sem nome, CPF, identificadores de conta ou transação e sem as notas do CRM. O cliente aparece por um pseudônimo (C-XXXX) — pseudonimização, não anonimização.</div></div>
+<div class="qa"><div class="q">Por que usar o plano gratuito do Gemini, se ele pode usar os dados?</div><div class="a">Porque é um hackathon com dados sintéticos e pacote minimizado. Estamos cientes de que, com dados de clientes, o plano pago seria condição mínima — e que ainda faltaria avaliação jurídica (está registrado como pendência).</div></div>
+<div class="qa"><div class="q">O sistema é conforme a LGPD ou certificado ISO 42001?</div><div class="a">Não alegamos conformidade. Os requisitos foram orientados pela ISO/IEC 42001 (prévia do documento) e registramos 12 decisões jurídicas que dependem de especialistas — base legal, Open Finance, retenção, fornecedor do LLM, transferência internacional, entre outras.</div></div>
+<div class="qa"><div class="q">E se uma nota do CRM tiver uma instrução maliciosa?</div><div class="a">As notas nunca vão para a IA e são exibidas só como texto. Se o modelo repetir uma instrução desse tipo, o validador bloqueia. O caso C-F65B tem uma nota assim para demonstrar.</div></div>
+<div class="qa"><div class="q">Quem pode ver o quê?</div><div class="a">A analista só abre casos da própria fila; tentar outro caso é negado e registrado sem expor dados. O papel de risco vê a auditoria, mas não abre casos. Trocar de caso apaga tudo do anterior; uma resposta atrasada de outro caso é descartada.</div></div>
+<div class="qa"><div class="q">Como vocês sabem que isso ajuda a analista?</div><div class="a">Ainda não medimos com analistas reais — seria o próximo passo. <span class="ph">[resultado do teste com pessoa de fora do time]</span> No piloto: tempo de preparação manual × assistido, erros encontrados na revisão e compreensão de fato × hipótese.</div></div>
+<div class="qa"><div class="q">Qual o custo de operar?</div><div class="a">Os fatos não usam IA. Há uma chamada ao modelo por caso aberto. O custo em dinheiro por caso ainda não foi medido; a latência observada foi de 5 a 31 s (mediana 9 s).</div></div>
+<div class="qa"><div class="q">O que é real e o que é simulado?</div><div class="a">Real: autorização por caso, cálculos, qualidade, evidências, validador, auditoria e as chamadas ao Gemini. Simulado: o login, a base de demonstração (gerada pelo time no formato da oficial) e o teste adversarial do botão. Nenhum sistema do banco é acessado.</div></div>
+</section>
+
+<!-- 10, 11, 12 -->
+<section>
+<h2><span class="n">10</span>Números: o que citar e o que evitar</h2>
+<div class="two">
+  <div class="box green"><h3>Pode citar (medido)</h3><ul style="margin:0">
+    <li>109 testes automatizados; 18 de 18 cenários do briefing</li>
+    <li>28 respostas reais do Gemini avaliadas: 16 aprovadas, 12 bloqueadas; 4 falhas do provedor com fallback</li>
+    <li>Fatos prontos em ~8 ms (mediana); IA entre 5 e 31 s (mediana 9 s)</li>
+    <li>182 de 600 meses-cliente com agregado incompatível (base oficial)</li>
+    <li>15 tabelas, 50 clientes, 22 renegociações (base oficial)</li>
+    <li>0 acessos a outro cliente nos testes; 100% das afirmações com evidência</li>
+    <li>12 pendências jurídicas registradas; 3 modelos em cadeia</li></ul></div>
+  <div class="box red"><h3>Não diga</h3><ul style="margin:0">
+    <li>"Reduz a inadimplência" ou "aumenta a recuperação" (não medido)</li>
+    <li>"Conforme LGPD", "certificado ISO" ou "100% seguro"</li>
+    <li>"Dados anonimizados" (são pseudonimizados)</li>
+    <li>"A IA decide", "recomenda" ou "prevê quem vai pagar"</li>
+    <li>"Usamos dados reais de clientes"</li>
+    <li>Qualquer resultado do teste com usuários que não tenha sido feito</li></ul></div>
+</div>
+
+<h2><span class="n">11</span>Glossário</h2>
+<table>
+  <tr><th style="width:22%">Termo</th><th>Significado</th></tr>
+  <tr><td><b>Fato</b></td><td>Registro ou cálculo sustentado diretamente pelos dados.</td></tr>
+  <tr><td><b>Sinal</b></td><td>Padrão derivado de fatos, com método explícito (ex.: queda ≤ −20%).</td></tr>
+  <tr><td><b>Hipótese</b></td><td>Explicação possível, não confirmada. Sempre rotulada.</td></tr>
+  <tr><td><b>Pergunta neutra</b></td><td>Forma respeitosa de validar uma informação que falta, sem acusar nem propor.</td></tr>
+  <tr><td><b>Evidência</b></td><td>Prova de um número: código (E07-9F3A), fonte, período, fórmula e linhas de origem.</td></tr>
+  <tr><td><b>Validador</b></td><td>Regras que conferem a resposta da IA e a descartam inteira se ela sair do contrato.</td></tr>
+  <tr><td><b>Qualidade da métrica</b></td><td>Suficiente, parcial ou insuficiente, avaliada antes de qualquer conclusão.</td></tr>
+  <tr><td><b>Despesa econômica</b></td><td>Compras no cartão + débitos de consumo (sem contar a fatura de novo).</td></tr>
+  <tr><td><b>Entradas externas / recorrentes</b></td><td>Créditos que não vêm das próprias contas; recorrentes = mesma contraparte em ≥ 3 meses.</td></tr>
+  <tr><td><b>Pseudônimo</b></td><td>C-XXXX exibido no lugar do identificador interno do cliente.</td></tr>
+  <tr><td><b>Fallback</b></td><td>Quando a IA falha, a tela mostra só os fatos calculados.</td></tr>
+  <tr><td><b>Trilha encadeada</b></td><td>Auditoria só de inserção; cada evento guarda o hash do anterior, o que revela alterações.</td></tr>
+</table>
+
+<h2><span class="n">12</span>Checklist e plano B</h2>
+<div class="two">
+  <div class="box"><h3>Antes de apresentar</h3><ul style="margin:0">
+    <li>App aberto no computador da demo, identidade <b>Ana</b></li>
+    <li>IA ligada e testada 10 minutos antes (abrir C-4AE0)</li>
+    <li>Internet funcionando; notificações desligadas; zoom do navegador legível</li>
+    <li>Nunca mostrar o arquivo <code>.env</code> nem a chave da API</li>
+    <li>Vídeo da demo salvo localmente</li>
+    <li>Opcional: apagar <code>data/audit.db</code> com o app parado para começar a trilha limpa</li></ul></div>
+  <div class="box accent"><h3>Se algo der errado</h3><ul style="margin:0">
+    <li><b>IA demorando ou indisponível:</b> use isso na fala — "é exatamente o fallback: os fatos continuam aqui e nada é inventado".</li>
+    <li><b>IA bloqueada num caso real:</b> "o validador preferiu descartar a mostrar algo sem prova" e mostre os motivos.</li>
+    <li><b>Sem internet:</b> desligue a IA; toda a demo de fatos, evidências, validador e decisão funciona sem ela.</li>
+    <li><b>App travado:</b> rode o vídeo.</li></ul></div>
+</div>
+<h3>Como rodar</h3>
+<p><code>cd "F:\Hackaton Itaú"</code> e depois <code>.venv\Scripts\python -m streamlit run app\streamlit_app.py</code>. O app abre em <code>http://localhost:8501</code>. A chave do Gemini fica em <code>.env</code>.</p>
+<p class="small" style="margin-top:14px">Protótipo de hackathon com dados sintéticos. Não é produto nem comunicado oficial do Itaú. Arquitetura do MVP incorpora controles preliminares de governança, segurança e privacidade; uso real exigiria validação das políticas internas, requisitos jurídicos e controles organizacionais aplicáveis.</p>
+</section>
+
+</body>
+</html>

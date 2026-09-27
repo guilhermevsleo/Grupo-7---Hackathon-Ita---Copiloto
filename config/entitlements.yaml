@@ -1,0 +1,24 @@
+# Identidades e direitos SIMULADOS para a demonstração (briefing §3).
+# O MVP não implementa autenticação corporativa: a tela exibe "identidade simulada".
+# Regra: nega por padrão. Um colaborador só abre os casos listados aqui.
+# Ao trocar para a base oficial, substitua os case_id pelos casos reais (ver tools/inspect_db.py).
+
+roles:
+  analista_cobranca:
+    permissions: [case:open, context:read, decision:write]
+  risco_auditoria:
+    permissions: [audit:read, ai:toggle]
+
+employees:
+  EMP-001:
+    display_name: "Ana (analista de renegociação) — simulada"
+    role: analista_cobranca
+    authorized_cases: [CASE_0001, CASE_0002, CASE_0003, CASE_0004, CASE_0005, CASE_0006, CASE_0007]
+  EMP-002:
+    display_name: "Bruno (analista de renegociação) — simulado"
+    role: analista_cobranca
+    authorized_cases: [CASE_0008, CASE_0003]
+  EMP-900:
+    display_name: "Sérgio (risco e conformidade) — simulado"
+    role: risco_auditoria
+    authorized_cases: []

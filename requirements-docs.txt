@@ -1,0 +1,5 @@
+# Só para gerar as capturas de tela e os PDFs (tools/capture_screens.py e tools/build_pdfs.py).
+# Usa o Microsoft Edge instalado; não é preciso baixar navegadores do Playwright.
+playwright>=1.50
+pypdf>=6.0
+pypdfium2>=4.30

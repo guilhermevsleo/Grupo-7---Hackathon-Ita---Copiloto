@@ -1,0 +1,52 @@
+# Política técnica do MVP (briefing §26). Não é política jurídica nem operacional do Itaú.
+# Arquitetura do MVP incorpora controles preliminares de governança, segurança e privacidade.
+# Uso real exigiria validação das políticas internas, requisitos jurídicos e controles
+# organizacionais aplicáveis.
+
+environment: synthetic_demo
+
+purpose:
+  id: employee_financial_context
+  description: >-
+    auxiliar colaborador de cobrança a compreender o contexto financeiro
+    observável de um cliente autorizado
+
+access:
+  deny_by_default: true
+  one_active_customer_per_session: true
+  cross_customer_access: false
+
+llm:
+  raw_database_access: false
+  arbitrary_sql: false
+  direct_identifiers: false
+  # Refere-se à aplicação: o MVP não treina nem ajusta modelos com os payloads.
+  # O uso dos payloads pelo fornecedor depende do plano contratado (ver llm_provider).
+  model_training_with_payloads: false
+
+llm_provider:
+  name: google_gemini_api
+  tier: free
+  # No plano gratuito, os termos do fornecedor permitem usar o conteúdo enviado para melhorar
+  # os produtos dele. Aceitável aqui porque o payload é minimizado e os dados são sintéticos.
+  provider_may_use_payloads_to_improve_products: true
+  # Com dados de clientes, plano pago seria necessário (condição mínima, não suficiente).
+  paid_tier_required_for_real_data: true
+  requires_human_legal_privacy_validation: true
+
+prohibited:
+  automated_collection_decision: true
+  product_recommendation: true
+  priority_scoring: true
+  sensitive_attribute_inference: true
+
+real_data:
+  allowed: false
+
+legal_basis:
+  status: NOT_DEFINED_IN_MVP
+  requires_human_legal_privacy_validation: true
+
+retention:
+  status: NOT_DEFINED_FOR_REAL_DATA
+  requires_human_legal_privacy_validation: true

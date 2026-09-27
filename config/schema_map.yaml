@@ -1,0 +1,192 @@
+# Mapa entre nomes lógicos (usados pelo código) e colunas físicas do SQLite.
+# Único lugar que conhece os nomes reais das colunas. Toda consulta usa projeção explícita
+# (nunca SELECT *) e filtra pelo cliente do caso ativo.
+#
+# Campos DELIBERADAMENTE NÃO MAPEADOS (nunca são lidos pela aplicação):
+#   customers: nome, CPF, data de nascimento, escolaridade, ocupação, composição familiar,
+#              região, cohort, data_completeness_expected
+#   tabelas monthly_summary e derived_features, views v_case_overview, v_current_debt, v_source_gaps
+#   qualquer conteúdo de evaluator_only/
+#
+# Tipos: str | int | money (-> centavos inteiros) | date (-> date; "" vira None) | flag (-> bool)
+#        untrusted_text (texto livre: dado não confiável, nunca enviado ao LLM)
+# required: false => a coluna pode não existir na base oficial; o campo vira None.
+#
+# Ao receber a base oficial: rode `python tools/inspect_db.py` e ajuste as colunas apontadas.
+
+tables:
+  agent_cases:
+    table: agent_cases
+    customer_column: customer_id
+    fields:
+      case_id: {column: case_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      opened_at: {column: case_opened_at, type: date}
+
+  customers:
+    table: customers
+    customer_column: customer_id
+    fields:
+      customer_id: {column: customer_id, type: str}
+      declared_income: {column: declared_monthly_income_brl, type: money, required: false}
+      open_finance_status: {column: open_finance_status, type: str, required: false}
+      days_past_due: {column: days_past_due, type: int, required: false}
+
+  accounts:
+    table: accounts
+    customer_column: customer_id
+    fields:
+      account_id: {column: account_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      institution: {column: institution_name, type: str, required: false}
+      source: {column: source, type: str}
+      is_primary: {column: is_primary, type: flag, required: false}
+      coverage_start: {column: data_coverage_start, type: date, required: false}
+      coverage_end: {column: data_coverage_end, type: date, required: false}
+      overdraft_limit: {column: overdraft_limit_brl, type: money, required: false}
+
+  transactions:
+    table: transactions
+    customer_column: customer_id
+    parent: {table_key: accounts, key: account_id}
+    fields:
+      transaction_id: {column: transaction_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      account_id: {column: account_id, type: str}
+      date: {column: transaction_date, type: date}
+      direction: {column: direction, type: str}
+      amount: {column: amount_brl, type: money}
+      category: {column: category, type: str}
+      transaction_type: {column: transaction_type, type: str}
+      counterparty_type: {column: counterparty_type, type: str, required: false}
+      counterparty_id: {column: counterparty_id, type: str, required: false}
+      own_transfer_flag: {column: own_account_transfer_flag, type: flag}
+      balance_after: {column: balance_after_brl, type: money, required: false}
+      description: {column: description, type: untrusted_text, required: false}
+
+  credit_cards:
+    table: credit_cards
+    customer_column: customer_id
+    fields:
+      card_id: {column: card_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      credit_limit: {column: credit_limit_brl, type: money, required: false}
+      current_balance: {column: current_balance_brl, type: money, required: false}
+      days_past_due: {column: days_past_due, type: int, required: false}
+
+  card_transactions:
+    table: card_transactions
+    customer_column: customer_id
+    parent: {table_key: credit_cards, key: card_id}
+    fields:
+      card_transaction_id: {column: card_transaction_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      card_id: {column: card_id, type: str}
+      date: {column: purchase_date, type: date}
+      amount: {column: amount_brl, type: money}
+      category: {column: category, type: str, required: false}
+      status: {column: status, type: str, required: false}
+      merchant_description: {column: merchant_description, type: untrusted_text, required: false}
+
+  card_statements:
+    table: card_statements
+    customer_column: customer_id
+    parent: {table_key: credit_cards, key: card_id}
+    fields:
+      statement_id: {column: statement_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      card_id: {column: card_id, type: str}
+      reference_month: {column: reference_month, type: date}
+      due_date: {column: due_date, type: date, required: false}
+      statement_amount: {column: statement_amount_brl, type: money}
+      minimum_payment: {column: minimum_payment_brl, type: money, required: false}
+      paid_amount: {column: paid_amount_brl, type: money}
+      days_late: {column: days_late, type: int, required: false}
+
+  loans:
+    table: loans
+    customer_column: customer_id
+    fields:
+      contract_id: {column: contract_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      product: {column: product, type: str, required: false}
+      installment_amount: {column: installment_amount_brl, type: money, required: false}
+      outstanding_balance: {column: outstanding_balance_brl, type: money, required: false}
+      days_past_due: {column: days_past_due, type: int, required: false}
+
+  installments:
+    table: installments
+    customer_column: customer_id
+    parent: {table_key: loans, key: contract_id}
+    fields:
+      installment_id: {column: installment_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      contract_id: {column: contract_id, type: str}
+      due_date: {column: due_date, type: date}
+      amount_due: {column: amount_due_brl, type: money}
+      paid_date: {column: paid_date, type: date, required: false}
+      paid_amount: {column: paid_amount_brl, type: money, required: false}
+      days_late: {column: days_late, type: int, required: false}
+
+  consents:
+    table: consents
+    customer_column: customer_id
+    fields:
+      consent_id: {column: consent_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      status: {column: status, type: str}
+      scope: {column: scope, type: str, required: false}
+      expiration_date: {column: expiration_date, type: date, required: false}
+      last_sync_date: {column: last_sync_date, type: date, required: false}
+
+  contacts:
+    table: contacts
+    customer_column: customer_id
+    fields:
+      contact_id: {column: contact_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      date: {column: contact_date, type: date}
+      channel: {column: channel, type: str, required: false}
+      outcome: {column: outcome, type: str, required: false}
+      notes: {column: agent_notes, type: untrusted_text, required: false}
+
+  renegotiations:
+    table: renegotiations
+    customer_column: customer_id
+    fields:
+      agreement_id: {column: agreement_id, type: str}
+      customer_id: {column: customer_id, type: str}
+      proposal_date: {column: proposal_date, type: date, required: false}
+      status: {column: status, type: str}
+      related_products: {column: related_products, type: untrusted_text, required: false}
+
+  data_quality:
+    table: data_quality
+    customer_column: customer_id
+    fields:
+      customer_id: {column: customer_id, type: str}
+      source_name: {column: source_name, type: str}
+      status: {column: status, type: str}
+      coverage_note: {column: coverage_note, type: untrusted_text, required: false}
+
+# Vocabulário da base -> conceitos usados pelo motor. Listas permitem acomodar os valores reais.
+vocab:
+  direction_credit: [CREDIT]
+  direction_debit: [DEBIT]
+  card_bill_payment: [CARD_BILL_PAYMENT]
+  loan_payment: [LOAN_PAYMENT, INSTALLMENT_PAYMENT]
+  cash_withdrawal: [CASH_WITHDRAWAL, ATM_WITHDRAWAL]
+  investment_redemption: [INVESTMENT_REDEMPTION]
+  income_category: [INCOME, SALARY]
+  employer_counterparty: [EMPLOYER]
+  person_counterparty: [PERSON]
+  source_core: [CORE]
+  source_open_finance: [OPEN_FINANCE]
+  card_posted: [POSTED]
+  # data_quality.source_name -> fonte lógica
+  quality_sources:
+    PRIMARY_ACCOUNT: [PRIMARY_ACCOUNT]
+    EXTERNAL_ACCOUNTS: [EXTERNAL_ACCOUNTS, OPEN_FINANCE]
+    CARDS: [CARDS]
+    CREDIT_HISTORY: [CREDIT_HISTORY]
+    CONTACT_HISTORY: [CONTACT_HISTORY]
